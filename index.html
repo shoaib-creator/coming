@@ -1,49 +1,831 @@
-<!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Coming Soon - Something amazing is on the way">
-    <title>Coming Soon</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Nova.Web | Digital Presence Reimagined</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/geist@1.0.0/dist/fonts/geist-sans/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/geist@1.0.0/dist/fonts/geist-mono/style.css" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --acid: #ccff00;
+            --dark: #050505;
+            --panel: #0f0f0f;
+            --border: #222;
+        }
+
+        body {
+            font-family: 'Geist Sans', sans-serif;
+            background-color: var(--dark);
+            color: #e5e5e5;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .font-mono {
+            font-family: 'Geist Mono', monospace;
+        }
+
+        /* Preloader */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .door-panel {
+            position: absolute;
+            inset: 0;
+            background: #000;
+            transition: transform 1s cubic-bezier(0.87, 0, 0.13, 1);
+            z-index: 1;
+        }
+
+        .door-left {
+            clip-path: polygon(0 0, 100% 0, 0 100%);
+            transform-origin: top left;
+        }
+
+        .door-right {
+            clip-path: polygon(100% 0, 100% 100%, 0 100%);
+            transform-origin: bottom right;
+        }
+
+        .preloader-logo {
+            z-index: 2;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        body.loaded .door-left {
+            transform: translate(-100%, -100%);
+        }
+
+        body.loaded .door-right {
+            transform: translate(100%, 100%);
+        }
+
+        body.loaded .preloader-logo {
+            opacity: 0;
+        }
+
+        /* Particles & Visuals */
+        #hero-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .glass-nav {
+            background: rgba(5, 5, 5, 0.7);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Card Interactions */
+        .card-particle-container {
+            position: absolute;
+            top: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feature-card:hover .card-particle-container {
+            opacity: 1;
+        }
+
+        .digital-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--acid), transparent);
+            transform: translateX(-100%);
+            animation: rain 1.5s infinite linear;
+        }
+
+        @keyframes rain {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* Gear Logic */
+        .gear-spin {
+            animation: spin 10s linear infinite;
+        }
+
+        .gear-spin-reverse {
+            animation: spin 10s linear infinite reverse;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--acid);
+        }
+
+        /* Custom Form Elements */
+        .custom-input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #333;
+            color: white;
+            transition: border-color 0.3s ease;
+        }
+
+        .custom-input:focus {
+            outline: none;
+            border-bottom-color: var(--acid);
+        }
+    </style>
 </head>
-<body>
-    <div class="container">
-        <div class="content">
-            <h1 class="title">Coming Soon</h1>
-            <p class="subtitle">Something amazing is on the way!</p>
-            <p class="description">
-                We're working hard to bring you an exciting new experience. 
-                Stay tuned for updates!
-            </p>
-            <form class="notify-section" onsubmit="return false;">
-                <label for="email-input" class="visually-hidden">Email address</label>
-                <input type="email" id="email-input" placeholder="Enter your email" class="email-input" required>
-                <button type="submit" class="notify-btn">Notify Me</button>
-            </form>
-            <div class="social-links">
-                <a href="javascript:void(0)" class="social-link" aria-label="Facebook">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+
+<body class="selection:bg-[#ccff00] selection:text-black">
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="door-panel door-left"></div>
+        <div class="door-panel door-right"></div>
+        <div class="preloader-logo flex flex-col items-center justify-center gap-4">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ccff00" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            <div class="font-mono text-[#ccff00] text-sm tracking-widest animate-pulse">COMPILING_ASSETS</div>
+        </div>
+    </div>
+
+    <!-- Ticker Tape -->
+    <div
+        class="w-full bg-[#ccff00] text-black text-xs font-mono py-1 overflow-hidden whitespace-nowrap border-b border-black">
+        <div class="inline-block animate-[marquee_20s_linear_infinite]">
+            SEO OPTIMIZED // NEXT.JS // REACT // TAILWIND // PERFORMANCE 100/100 // LAUNCHING Q4 2024 // WAITLIST OPEN
+            // RESPONSIVE DESIGN // SEO OPTIMIZED // NEXT.JS // REACT // TAILWIND //
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="fixed top-[26px] w-full z-50 glass-nav">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2 group">
+                <div
+                    class="w-8 h-8 bg-white text-black flex items-center justify-center rounded-sm group-hover:bg-[#ccff00] transition-colors">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                        <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                        <path d="M2 2l7.586 7.586"></path>
+                        <circle cx="11" cy="11" r="2"></circle>
                     </svg>
-                </a>
-                <a href="javascript:void(0)" class="social-link" aria-label="Twitter">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                    </svg>
-                </a>
-                <a href="javascript:void(0)" class="social-link" aria-label="Instagram">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/>
-                    </svg>
-                </a>
-                <a href="javascript:void(0)" class="social-link" aria-label="LinkedIn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                    </svg>
+                </div>
+                <span class="font-semibold text-lg tracking-tight">TRYHOLO</span>
+            </a>
+
+            <div class="hidden md:flex items-center gap-8 text-sm text-gray-400 font-medium">
+                <a href="#services" class="hover:text-white transition-colors">Services</a>
+                <a href="#process" class="hover:text-white transition-colors">Process</a>
+                <a href="#portfolio" class="hover:text-white transition-colors">Work</a>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <div class="hidden sm:flex items-center gap-2 text-xs font-mono text-[#ccff00]">
+                    <span class="relative flex h-2 w-2">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ccff00] opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-[#ccff00]"></span>
+                    </span>
+                    ACCEPTING_CLIENTS
+                </div>
+                <a href="#contact"
+                    class="relative px-6 py-2 bg-transparent border border-gray-600 hover:border-[#ccff00] text-white hover:text-[#ccff00] text-sm font-mono transition-all duration-300 group overflow-hidden">
+                    <span class="relative z-10">BOOK_CALL</span>
+                    <div
+                        class="absolute inset-0 bg-[#ccff00]/10 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300">
+                    </div>
                 </a>
             </div>
         </div>
-    </div>
+    </nav>
+
+    <!-- Canvas Background -->
+    <canvas id="hero-canvas"></canvas>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen pt-32 pb-20 px-6 flex flex-col justify-center overflow-hidden">
+        <div class="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-16 items-center">
+
+            <!-- Hero Content -->
+            <div class="relative z-10 space-y-8">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-gray-800 bg-[#111]/50 backdrop-blur-sm">
+                    <span class="text-xs font-mono text-gray-400">STATUS:</span>
+                    <span class="text-[#ccff00] font-mono text-xs tracking-widest uppercase">COMING SOON</span>
+                </div>
+
+                <h1 class="text-6xl md:text-8xl font-semibold tracking-tight leading-[0.9] text-white decrypt-text"
+                    data-value="Digital Presence Reimagined">
+                    Digital Presence Reimagined
+                </h1>
+
+                <p class="text-xl text-gray-400 max-w-lg leading-relaxed">
+                    We build high-performance websites for ambitious small businesses. <span
+                        class="text-white font-medium">Pixel perfect. SEO optimized. Future proof.</span>
+                </p>
+
+                <!-- Waitlist / Contact Form -->
+                <div class="pt-6 max-w-md">
+                    <div class="flex flex-col gap-4">
+                        <label class="text-xs font-mono text-gray-500 uppercase">Join the priority waitlist</label>
+                        <div class="flex gap-0">
+                            <input type="email" placeholder="enter@email.com"
+                                class="flex-1 bg-[#111] border border-gray-700 border-r-0 text-white px-4 py-4 focus:outline-none focus:bg-[#1a1a1a] transition-colors placeholder:text-gray-600">
+                            <button
+                                class="px-6 py-4 bg-[#ccff00] hover:bg-[#b3e600] text-black font-semibold flex items-center gap-2 transition-transform hover:scale-[1.02] active:scale-[0.98]">
+                                NOTIFY_ME
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-600 font-mono">* Limited spots for Q4 2024 development cycles.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Image / Code & Preview Mockup -->
+            <div class="relative z-10 lg:h-[700px] flex items-center justify-center">
+                <!-- Glowing effect -->
+                <div
+                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[500px] bg-[#ccff00] opacity-5 blur-[100px] rounded-full">
+                </div>
+
+                <!-- Floating Code Window -->
+                <div
+                    class="absolute top-[10%] left-0 w-[90%] z-20 transform hover:-translate-y-2 transition-transform duration-500">
+                    <div class="bg-[#0f0f0f] border border-gray-800 rounded-lg shadow-2xl overflow-hidden">
+                        <div class="h-8 bg-[#1a1a1a] border-b border-gray-800 flex items-center px-3 gap-2">
+                            <div class="flex gap-1.5">
+                                <div class="w-2.5 h-2.5 rounded-full bg-red-500/20"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/20"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-green-500/20"></div>
+                            </div>
+                            <span class="ml-2 text-[10px] font-mono text-gray-500">layout.tsx</span>
+                        </div>
+                        <div class="p-4 font-mono text-xs leading-relaxed text-gray-400">
+                            <div class="flex gap-4">
+                                <span class="text-gray-700 select-none">1</span>
+                                <span><span class="text-purple-400">export default</span> <span
+                                        class="text-blue-400">function</span> <span
+                                        class="text-yellow-300">RootLayout</span>({</span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-gray-700 select-none">2</span>
+                                <span class="pl-4">children,</span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-gray-700 select-none">3</span>
+                                <span>}: { children: React.ReactNode }) {</span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-gray-700 select-none">4</span>
+                                <span class="pl-4"><span class="text-purple-400">return</span> (</span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-gray-700 select-none">5</span>
+                                <span class="pl-8">&lt;<span class="text-pink-400">html</span> <span
+                                        class="text-green-400">lang</span>=<span
+                                        class="text-orange-300">"en"</span>&gt;</span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-gray-700 select-none">6</span>
+                                <span class="pl-12">&lt;<span class="text-pink-400">body</span> <span
+                                        class="text-green-400">className</span>={inter.className}&gt;</span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-gray-700 select-none">7</span>
+                                <span class="pl-16">{children}</span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-gray-700 select-none">8</span>
+                                <span class="pl-12">&lt;/<span class="text-pink-400">body</span>&gt;</span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-gray-700 select-none">9</span>
+                                <span class="pl-8">&lt;/<span class="text-pink-400">html</span>&gt;</span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-gray-700 select-none">10</span>
+                                <span> )</span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-gray-700 select-none">11</span>
+                                <span>}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Website Preview Mockup (Back) -->
+                <div
+                    class="absolute top-[30%] right-[-20px] w-[80%] h-[400px] z-10 bg-[#111] border border-gray-800 rounded-lg shadow-xl overflow-hidden opacity-80 transform rotate-[2deg]">
+                    <div class="h-8 bg-[#1a1a1a] border-b border-gray-800 flex items-center justify-center relative">
+                        <div class="w-32 h-4 bg-gray-800 rounded-full opacity-50"></div>
+                    </div>
+                    <div class="p-6 grid grid-cols-2 gap-4">
+                        <div class="space-y-3">
+                            <div class="h-8 w-2/3 bg-gray-800 rounded animate-pulse"></div>
+                            <div class="h-4 w-full bg-gray-800/50 rounded"></div>
+                            <div class="h-4 w-5/6 bg-gray-800/50 rounded"></div>
+                            <div class="mt-4 h-10 w-32 bg-[#ccff00] rounded"></div>
+                        </div>
+                        <div class="bg-gray-800/30 rounded h-full min-h-[150px]"></div>
+                    </div>
+                </div>
+
+                <!-- Floating Stats Card -->
+                <div
+                    class="absolute bottom-[20%] left-[-20px] bg-[#050505] border border-gray-800 p-4 w-52 z-30 shadow-2xl backdrop-blur-xl bg-opacity-90">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i data-lucide="bar-chart-2" class="w-4 h-4 text-[#ccff00]"></i>
+                        <span class="text-xs font-mono text-gray-400">PERFORMANCE</span>
+                    </div>
+                    <div class="w-full h-1 bg-gray-800 rounded-full mb-2 overflow-hidden">
+                        <div class="h-full bg-[#ccff00] w-[98%]"></div>
+                    </div>
+                    <div class="flex justify-between text-xs font-mono">
+                        <span class="text-gray-500">SCORE</span>
+                        <span class="text-white">99/100</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="relative py-32 bg-[#050505] border-t border-gray-900">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="mb-20 flex flex-col md:flex-row justify-between items-end gap-6">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-semibold tracking-tight text-white mb-6 decrypt-text"
+                        data-value="Full Stack Service">Full Stack Service</h2>
+                    <p class="text-xl text-gray-400 max-w-xl leading-relaxed">
+                        We don't just design pretty pages. We build revenue-generating assets for your business.
+                    </p>
+                </div>
+                <div
+                    class="text-[#ccff00] font-mono text-xs tracking-widest border border-[#ccff00] px-4 py-2 rounded-full">
+                    OPEN FOR BUSINESS
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div
+                    class="feature-card group relative p-8 bg-[#0a0a0a] border border-gray-800 hover:border-gray-700 transition-all duration-300">
+                    <div class="card-particle-container">
+                        <div class="digital-rain"></div>
+                    </div>
+                    <div
+                        class="mb-6 w-12 h-12 bg-[#111] rounded border border-gray-800 flex items-center justify-center text-[#ccff00]">
+                        <i data-lucide="layout-template" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3">Custom Architecture</h3>
+                    <p class="text-lg text-gray-500 leading-relaxed">Bespoke designs tailored to your brand identity. No
+                        generic templates, just pure code.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div
+                    class="feature-card group relative p-8 bg-[#0a0a0a] border border-gray-800 hover:border-gray-700 transition-all duration-300">
+                    <div class="card-particle-container">
+                        <div class="digital-rain"></div>
+                    </div>
+                    <div
+                        class="mb-6 w-12 h-12 bg-[#111] rounded border border-gray-800 flex items-center justify-center text-[#ccff00]">
+                        <i data-lucide="zap" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3">Lightning Fast</h3>
+                    <p class="text-lg text-gray-500 leading-relaxed">Core Web Vitals optimized. Sub-second load times
+                        that keep Google and your customers happy.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div
+                    class="feature-card group relative p-8 bg-[#0a0a0a] border border-gray-800 hover:border-gray-700 transition-all duration-300">
+                    <div class="card-particle-container">
+                        <div class="digital-rain"></div>
+                    </div>
+                    <div
+                        class="mb-6 w-12 h-12 bg-[#111] rounded border border-gray-800 flex items-center justify-center text-[#ccff00]">
+                        <i data-lucide="search" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3">SEO Native</h3>
+                    <p class="text-lg text-gray-500 leading-relaxed">Built from the ground up with semantic HTML and
+                        metadata to rank higher on search engines.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Automation/Process Section -->
+    <section id="process" class="py-32 bg-[#050505] overflow-hidden relative border-t border-gray-900">
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+
+            <div
+                class="order-2 lg:order-1 relative h-[500px] flex items-center justify-center bg-[#0a0a0a] border border-gray-800 rounded-xl overflow-hidden group">
+                <!-- Grid background -->
+                <div
+                    class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]">
+                </div>
+
+                <!-- SVG Gears adapted for Tech Maintenance -->
+                <div class="relative z-10 w-full h-full flex items-center justify-center">
+                    <svg width="400" height="400" viewBox="0 0 400 400" fill="none">
+                        <!-- Large Gear -->
+                        <g class="gear-spin" transform-origin="200 200">
+                            <path
+                                d="M200 130 C238.66 130 270 161.34 270 200 C270 238.66 238.66 270 200 270 C161.34 270 130 238.66 130 200 C130 161.34 161.34 130 200 130 Z"
+                                stroke="#333" stroke-width="2"></path>
+                            <path
+                                d="M200 100 V120 M200 280 V300 M300 200 H280 M120 200 H100 M270.7 129.3 L256.6 143.4 M143.4 256.6 L129.3 270.7 M270.7 270.7 L256.6 256.6 M143.4 143.4 L129.3 129.3"
+                                stroke="#555" stroke-width="12" stroke-linecap="round"></path>
+                            <circle cx="200" cy="200" r="20" stroke="#ccff00" stroke-width="2"></circle>
+                        </g>
+                        <!-- Code symbols revolving -->
+                        <g class="gear-spin-reverse" transform-origin="310 110">
+                            <circle cx="310" cy="110" r="45" stroke="#333" stroke-width="2"></circle>
+                            <text x="300" y="115" fill="#ccff00" font-family="monospace" font-size="20">&lt;/&gt;</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="order-1 lg:order-2">
+                <h2 class="text-4xl md:text-5xl font-semibold tracking-tight text-white mb-6 decrypt-text"
+                    data-value="Automated Growth">Automated Growth</h2>
+                <p class="text-xl text-gray-400 mb-8 leading-relaxed">
+                    We handle the technical complexity so you can focus on running your business. Our maintenance
+                    packages keep your site secure and updated.
+                </p>
+                <ul class="space-y-6">
+                    <li class="flex items-start gap-4">
+                        <div
+                            class="mt-1 w-6 h-6 rounded border border-[#ccff00] bg-[#ccff00]/10 flex items-center justify-center text-[#ccff00]">
+                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-medium text-lg">Continuous Deployment</h4>
+                            <p class="text-gray-500 text-sm mt-1">Updates are pushed instantly without downtime. Your
+                                site is always live.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-4">
+                        <div
+                            class="mt-1 w-6 h-6 rounded border border-gray-700 bg-gray-800 flex items-center justify-center text-gray-300">
+                            <i data-lucide="shield" class="w-3.5 h-3.5"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-medium text-lg">Security &amp; Backups</h4>
+                            <p class="text-gray-500 text-sm mt-1">Daily backups and SSL encryption standard on every
+                                deployment.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coming Soon / Waitlist Section -->
+    <section id="contact" class="py-24 bg-[#050505] border-t border-gray-900">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 mb-6">
+                <span class="w-2 h-2 bg-[#ccff00] rounded-full animate-pulse"></span>
+                <span class="text-xs font-mono text-[#ccff00] tracking-widest">Q4 LAUNCH PROTOCOL</span>
+            </div>
+
+            <h2 class="text-5xl md:text-7xl font-semibold tracking-tight text-white mb-8">Ready to upgrade?</h2>
+
+            <div class="bg-[#0a0a0a] border border-gray-800 p-8 md:p-12 rounded-2xl relative overflow-hidden">
+                <div
+                    class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#ccff00] to-transparent opacity-50">
+                </div>
+
+                <div class="relative z-10">
+                    <p class="text-gray-400 mb-8 text-lg">
+                        We are currently accepting a limited number of clients for our initial launch.
+                        Secure your spot for a consultation.
+                    </p>
+
+                    <form class="flex flex-col gap-6 max-w-md mx-auto text-left">
+                        <div>
+                            <label class="text-xs font-mono text-gray-500 mb-2 block">BUSINESS_NAME</label>
+                            <input type="text" class="w-full custom-input py-2" placeholder="Acme Corp">
+                        </div>
+                        <div>
+                            <label class="text-xs font-mono text-gray-500 mb-2 block">CONTACT_EMAIL</label>
+                            <input type="email" class="w-full custom-input py-2" placeholder="you@acme.com">
+                        </div>
+                        <button type="button"
+                            class="mt-4 w-full py-4 bg-[#ccff00] hover:bg-[#b3e600] text-black font-semibold text-lg transition-all hover:tracking-wide">
+                            REQUEST ACCESS
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative bg-[#000] border-t border-gray-800 pt-20 pb-10 overflow-hidden">
+        <!-- Footer Particles Canvas -->
+        <canvas id="footer-canvas" class="absolute inset-0 w-full h-full opacity-30 pointer-events-none"></canvas>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-12 mb-20">
+                <div class="col-span-2 md:col-span-1">
+                    <a href="#" class="flex items-center gap-2 mb-6">
+                        <div class="w-6 h-6 bg-[#ccff00] text-black flex items-center justify-center rounded-sm">
+                            <span class="font-bold text-xs">N</span>
+                        </div>
+                        <span class="font-semibold text-white tracking-tight">NOVA.WEB</span>
+                    </a>
+                    <p class="text-gray-500 text-sm">
+                        Crafting digital experiences for the modern web.<br>
+                        Est. 2024.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-medium mb-4 text-sm">Services</h4>
+                    <ul class="space-y-3 text-xs text-gray-500 font-mono">
+                        <li><a href="#" class="hover:text-[#ccff00] hover:pl-2 transition-all duration-300">Web
+                                Design</a></li>
+                        <li><a href="#"
+                                class="hover:text-[#ccff00] hover:pl-2 transition-all duration-300">Development</a></li>
+                        <li><a href="#" class="hover:text-[#ccff00] hover:pl-2 transition-all duration-300">SEO
+                                Audit</a></li>
+                        <li><a href="#"
+                                class="hover:text-[#ccff00] hover:pl-2 transition-all duration-300">Maintenance</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-medium mb-4 text-sm">Company</h4>
+                    <ul class="space-y-3 text-xs text-gray-500 font-mono">
+                        <li><a href="#" class="hover:text-[#ccff00] hover:pl-2 transition-all duration-300">Process</a>
+                        </li>
+                        <li><a href="#" class="hover:text-[#ccff00] hover:pl-2 transition-all duration-300">Case
+                                Studies</a></li>
+                        <li><a href="#" class="hover:text-[#ccff00] hover:pl-2 transition-all duration-300">Waitlist</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-medium mb-4 text-sm">Social</h4>
+                    <div class="flex gap-4">
+                        <a href="#" class="text-gray-500 hover:text-[#ccff00] hover:scale-110 transition-all">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-[#ccff00] hover:scale-110 transition-all">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-[#ccff00] hover:scale-110 transition-all">
+                            <i data-lucide="linkedin" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="border-t border-gray-900 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-600 font-mono">
+                <div>© 2024 Nova Web Systems.</div>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-gray-400">Privacy Policy</a>
+                    <a href="#" class="hover:text-gray-400">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // --- Preloader Logic ---
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+                initDecryption(); // Start decryption after load
+            }, 1000);
+        });
+
+        // --- Decryption Effect ---
+        const initDecryption = () => {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@#$%^&*";
+            const elements = document.querySelectorAll('.decrypt-text');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target;
+                        if (target.dataset.decrypted === "true") return;
+
+                        const originalText = target.dataset.value || target.innerText;
+                        let iterations = 0;
+
+                        const interval = setInterval(() => {
+                            target.innerText = originalText
+                                .split("")
+                                .map((letter, index) => {
+                                    if (index < iterations) return originalText[index];
+                                    return chars[Math.floor(Math.random() * chars.length)];
+                                })
+                                .join("");
+
+                            if (iterations >= originalText.length) {
+                                clearInterval(interval);
+                                target.dataset.decrypted = "true";
+                            }
+
+                            iterations += 1 / 3;
+                        }, 30);
+
+                        observer.unobserve(target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            elements.forEach(el => observer.observe(el));
+        };
+
+        // --- Particle System (Hero Vacuum + Footer) ---
+        class ParticleSystem {
+            constructor(canvasId, options = {}) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.particles = [];
+                this.options = {
+                    count: 100,
+                    color: '#ccff00',
+                    isVacuum: false,
+                    ...options
+                };
+
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+                this.init();
+                this.animate();
+            }
+
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+
+            init() {
+                this.particles = [];
+                for (let i = 0; i < this.options.count; i++) {
+                    this.particles.push(new Particle(this.canvas, this.options.color));
+                }
+            }
+
+            animate() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+                const scrollY = window.scrollY;
+                const vacuumActive = this.options.isVacuum && scrollY > 50;
+
+                // Vacuum center point (bottom center of screen typically)
+                const targetX = this.canvas.width / 2;
+                const targetY = this.canvas.height * 0.8;
+
+                this.particles.forEach(p => {
+                    if (vacuumActive) {
+                        // Vacuum Logic
+                        const dx = targetX - p.x;
+                        const dy = targetY - p.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+
+                        if (dist < 50) {
+                            // Vanish and reset
+                            p.reset();
+                            p.y = this.canvas.height + 10;
+                        } else {
+                            // Move towards center
+                            p.x += dx * 0.05;
+                            p.y += dy * 0.05;
+                            p.x += Math.sin(dist * 0.1) * 2;
+                            p.opacity = Math.max(0, p.opacity - 0.01);
+                        }
+                    } else {
+                        // Normal Flow
+                        p.update();
+                        p.opacity = Math.min(0.8, p.opacity + 0.01);
+                    }
+                    p.draw(this.ctx);
+                });
+
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+
+        class Particle {
+            constructor(canvas, color) {
+                this.canvas = canvas;
+                this.color = color;
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * this.canvas.width;
+                this.y = Math.random() * this.canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedY = Math.random() * -1 - 0.5; // Upward flow
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+
+                if (this.y < 0) {
+                    this.y = this.canvas.height;
+                    this.x = Math.random() * this.canvas.width;
+                }
+            }
+
+            draw(ctx) {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        // Initialize Systems
+        // Hero: 1.5x particles, Vacuum effect enabled
+        const heroParticles = new ParticleSystem('hero-canvas', {
+            count: 150,
+            color: '#ccff00',
+            isVacuum: true
+        });
+
+        // Footer: Standard flow
+        const footerParticles = new ParticleSystem('footer-canvas', {
+            count: 60,
+            color: '#ccff00',
+            isVacuum: false
+        });
+
+    </script>
+
 </body>
+
 </html>
